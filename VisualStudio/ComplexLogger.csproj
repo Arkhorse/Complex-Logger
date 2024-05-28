@@ -1,0 +1,82 @@
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" encoding="UTF-8">
+
+	<!-- DO NOT CHANGE ANYTHING BETWEEN THESE (unless you know 100% what you are changing)-->
+	<!-- Further info: This defines critical project details, like the .net version, C# language version, null enable and do not generate assembly info (we need a custom one) -->
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>Latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<!-- Debug is useless for a mod -->
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+	<!-- DO NOT CHANGE ANYTHING BETWEEN THESE -->
+
+	<!-- This tells the assembly where to get the source -->
+	<PropertyGroup>
+		<!-- This forces you to properly document all objects (class, properties, ect) -->
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageProjectUrl>https://github.com/Arkhorse/ComplexLogger</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Arkhorse/ComplexLogger</RepositoryUrl>
+		<PackageTags>the long dark;the long dark mods</PackageTags>
+		<NeutralLanguage>en-CA</NeutralLanguage>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- This should point to wherever your games primary EXE is -->
+		<TheLongDarkPath>O:\SteamLibrary\steamapps\common\TheLongDark</TheLongDarkPath>
+		<Mods>$(TheLongDarkPath)\Mods</Mods>
+		<Plugins>$(TheLongDarkPath)\Plugins</Plugins>
+		<UserData>$(TheLongDarkPath)\UserData</UserData>
+		<UserLibs>$(TheLongDarkPath)\UserLibs</UserLibs>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- These paths are for various mod resources -->
+		<ModResources>P:\Modding\The Long Dark</ModResources>
+		<Github>$(ModResources)\Github</Github>
+		<MyMods>$(Github)\MyMods</MyMods>
+		<This>$(MyMods)\ComplexLogger</This>
+		<ReleaseFolderPath>$(This)\Release</ReleaseFolderPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<!-- List of used references -->
+	<ItemGroup>
+		<!-- This is the base reference. MUST EXIST -->
+		<PackageReference Include="STBlade.Modding.TLD.Il2CppAssemblies.Windows" Version="2.25.0" />
+		<!-- This is only if you use the ModSettings -->
+		<PackageReference Include="STBlade.Modding.TLD.ModSettings" Version="1.9.0" />
+	</ItemGroup>
+
+	<!-- Most commonly used using's. Add to this so you dont need to define them in the cs files -->
+	<ItemGroup>
+		<Using Include="System.Reflection" />
+		<Using Include="System.Diagnostics.CodeAnalysis" />
+		<Using Include="Il2Cpp" />
+		<Using Include="HarmonyLib" />
+		<Using Include="MelonLoader" />
+		<Using Include="UnityEngine" />
+		<!--#region Modded Libraries-->
+		<!-- Only if your using ModSettings -->
+		<Using Include="ModSettings" />
+		<!--#endregion-->
+	</ItemGroup>
+
+	<!-- This is a build event. It will copy your dll to the currently defined TheLongDarkPath's Mods folder -->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<!-- This copies the mods files to the games mod dir -->
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Mods)" />
+		<!-- This copies the mods files to a designated release folder. Speeds up finding the dll after a build -->
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseFolderPath)" />
+	</Target>
+
+</Project>
