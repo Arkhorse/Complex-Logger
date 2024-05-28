@@ -17,8 +17,8 @@
 	<PropertyGroup>
 		<!-- This forces you to properly document all objects (class, properties, ect) -->
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<PackageProjectUrl>https://github.com/Arkhorse/ComplexLogger</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/Arkhorse/ComplexLogger</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Arkhorse/Complex-Logger</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Arkhorse/Complex-Logger</RepositoryUrl>
 		<PackageTags>the long dark;the long dark mods</PackageTags>
 		<NeutralLanguage>en-CA</NeutralLanguage>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
