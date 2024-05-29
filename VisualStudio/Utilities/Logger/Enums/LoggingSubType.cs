@@ -20,6 +20,10 @@
 		/// <summary>
 		/// Print to the Unity Console
 		/// </summary>
-		uConsole
+		uConsole,
+		/// <summary>
+		/// Print a block to the log NOT IMPLEMENTED AT THIS TIME (Writing this is a bit complex), see the class for the current syntax
+		/// </summary>
+		Block
 	}
 }
