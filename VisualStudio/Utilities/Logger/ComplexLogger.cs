@@ -15,13 +15,13 @@ namespace ComplexLogger
 	/// <summary>
 	/// 
 	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public class ComplexLogger<T> : BaseLogger<T> where T : MelonBase
 	{
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="levels"></param>
-		public ComplexLogger(FlaggedLoggingLevel[]? levels = null)
+		public ComplexLogger()
 		{
 			Instance = this;
 
@@ -29,13 +29,6 @@ namespace ComplexLogger
 			AddLevel(FlaggedLoggingLevel.Error);
 			AddLevel(FlaggedLoggingLevel.Critical);
 			AddLevel(FlaggedLoggingLevel.Exception);
-
-			if (levels == null) return;
-
-			foreach (var level in levels)
-			{
-				AddLevel(level);
-			}
 		}
 
 		/// <summary>
@@ -46,7 +39,17 @@ namespace ComplexLogger
 		/// <summary>
 		/// The current logging level. Levels are bitwise added or removed.
 		/// </summary>
-		public static FlaggedLoggingLevel CurrentLevel { get; private set; }
+		public static FlaggedLoggingLevel CurrentLevel
+		{
+			get
+			{
+				return ComplexLogger<MelonBase>.CurrentLevel;
+			}
+			private set
+			{
+				ComplexLogger<MelonBase>.CurrentLevel = value;
+			}
+		}
 
 		/// <summary>
 		/// Add a flag to the existing list
@@ -54,13 +57,13 @@ namespace ComplexLogger
 		/// <param name="level">The level to add</param>
 		public static void AddLevel(FlaggedLoggingLevel level)
 		{
-			if (ComplexLogger<T>.CurrentLevel.HasFlag(level))
+			if (CurrentLevel.HasFlag(level))
 			{
 				Instance?.Log($"Attempting to add already existing level: {level}", FlaggedLoggingLevel.Debug);
 				return;
 			}
 
-			ComplexLogger<T>.CurrentLevel |= level;
+			CurrentLevel |= level;
 
 			Instance?.Log($"Added flag {level}", FlaggedLoggingLevel.Debug);
 		}
@@ -93,40 +96,56 @@ namespace ComplexLogger
 				return false;
 			}
 
-			ComplexLogger<T>.CurrentLevel &= ~level;
+			CurrentLevel &= ~level;
 
 			Instance?.Log($"Removed flag {level}", FlaggedLoggingLevel.Debug);
 			return true;
 		}
 
 		// All Log methods should use the following order:
-		// message, level, extra**, parameters
+		// message, level, LogSubType, extra**, parameters
 		// message is the log contents
 		// level is which level this log is to be displayed at
 		// extra** are things like exceptions (think args, kwargs from python).
 		// parameters must be last due to it being a params object[]
 
+		internal void Log(FlaggedLoggingLevel level, LoggingSubType LogSubType, params object[] parameters) 
+			=> Log(string.Empty, level, LogSubType, null, parameters);
+
+		internal void Log(string message, FlaggedLoggingLevel level, params object[] parameters) 
+			=> Log(message, level, LoggingSubType.Normal, null, parameters);
+
+		internal void Log(string message, FlaggedLoggingLevel level, System.Exception exception, params object[] parameters) 
+			=> Log(message, level, LoggingSubType.Normal, exception, parameters);
+
 		/// <summary>
-		/// 
+		/// Allows you to log an entire block, using <see cref="WriteLogBlock(string, string[], System.Drawing.Color)"/>
 		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="level"></param>
-		/// <param name="parameters"></param>
-		public void Log(string message, FlaggedLoggingLevel level, params object[] parameters)
+		/// <param name="Title">What you want the block to be titled</param>
+		/// <param name="Lines">Each line that you want in that block</param>
+		/// <param name="Color">The color of ALL lines in that block (use <see cref="Log(string, string[], List{System.Drawing.Color}, FlaggedLoggingLevel)"/> to be able to color the other lines individually)</param>
+		/// <param name="Level">What level you want this block to write at</param>
+		internal void Log(string Title, string[] Lines, System.Drawing.Color Color, FlaggedLoggingLevel Level)
 		{
-			Log(message,level, null, LoggingSubType.Normal, parameters);
+			if (CurrentLevel.HasFlag(Level))
+			{
+				WriteLogBlock(Title, Lines, Color);
+			}
 		}
 
 		/// <summary>
-		/// 
+		/// Allows you to log an entire block, using <see cref="WriteLogBlock(string, string[], System.Drawing.Color)"/>
 		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="level"></param>
-		/// <param name="exception"></param>
-		/// <param name="parameters"></param>
-		public void Log(string message, FlaggedLoggingLevel level, System.Exception exception, params object[] parameters)
+		/// <param name="Title">What you want the block to be titled</param>
+		/// <param name="Lines">Each line that you want in that block</param>
+		/// <param name="Color">The color of ALL lines in that block (use <see cref="Log(string, string[], System.Drawing.Color, FlaggedLoggingLevel)"/> to be able to color the other lines individually)</param>
+		/// <param name="Level">What level you want this block to write at</param>
+		internal void Log(string Title, string[] Lines, List<System.Drawing.Color> Color, FlaggedLoggingLevel Level)
 		{
-			Log(message, level, exception, LoggingSubType.Normal, parameters);
+			if (CurrentLevel.HasFlag(Level))
+			{
+				WriteLogBlock(Title, Lines, Color);
+			}
 		}
 
 		/// <summary>
@@ -137,12 +156,9 @@ namespace ComplexLogger
 		/// <param name="exception">The exception, if applicable, to display</param>
 		/// <param name="LogSubType">Used to write separators only when the logging level matches the current flags</param>
 		/// <param name="parameters">Any additional params</param>
-		/// <remarks>
-		/// <para>Use <see cref="WriteSeperator(object[])"/> or <see cref="WriteIntraSeparator(string, object[])"/> for seperators without using the flagged level</para> 
-		/// </remarks>
-		public void Log(string message, FlaggedLoggingLevel level, System.Exception? exception, LoggingSubType LogSubType, params object[] parameters)
+		internal void Log(string message, FlaggedLoggingLevel level, LoggingSubType? LogSubType, System.Exception? exception, params object[] parameters)
 		{
-			if (LogSubType != LoggingSubType.Normal)
+			if (LogSubType != null && LogSubType != LoggingSubType.Normal)
 			{
 				if (LogSubType == LoggingSubType.Separator)
 				{
@@ -163,6 +179,10 @@ namespace ComplexLogger
 					uConsole.Log(message);
 					return;
 				}
+				else if (LogSubType == LoggingSubType.Block)
+				{
+					throw new ComplexLoggerException("This LogSubType is not supported with the given arguements. Please use Log(string, string[], System.Drawing.Color, FlaggedLoggingLevel) or Log(string, string[], List<System.Drawing.Color>, FlaggedLoggingLevel)");
+				}
 			}
 
 			List<object> Warning = [];
@@ -173,7 +193,7 @@ namespace ComplexLogger
 			Critical.Add(FontStyle.Bold);
 			Critical.AddRange(parameters);
 
-			if (ComplexLogger<T>.CurrentLevel.HasFlag(level))
+			if (CurrentLevel.HasFlag(level))
 			{
 				switch (level)
 				{
@@ -205,12 +225,12 @@ namespace ComplexLogger
 			}
 			return;
 		}
-
+		#region Separators
 		/// <summary>
 		/// Prints a seperator
 		/// </summary>
 		/// <param name="parameters">Any additional params</param>
-		private void WriteSeperator(params object[] parameters)
+		internal void WriteSeperator(params object[] parameters)
 		{
 			Write("==============================================================================", parameters);
 		}
@@ -220,9 +240,9 @@ namespace ComplexLogger
 		/// </summary>
 		/// <param name="parameters">Any additional params</param>
 		/// <param name="level">The level of this message (NOT the existing the level)</param>
-		public void WriteSeperator(FlaggedLoggingLevel level, params object[] parameters)
+		internal void WriteSeperator(FlaggedLoggingLevel level, params object[] parameters)
 		{
-			if (ComplexLogger<T>.CurrentLevel.HasFlag(level)) WriteSeperator(parameters);
+			if (CurrentLevel.HasFlag(level)) WriteSeperator(parameters);
 		}
 
 		/// <summary>
@@ -230,7 +250,7 @@ namespace ComplexLogger
 		/// </summary>
 		/// <param name="message">The header name. Should be short</param>
 		/// <param name="parameters">Any additional params</param>
-		private void WriteIntraSeparator(string message, params object[] parameters)
+		internal void WriteIntraSeparator(string message, params object[] parameters)
 		{
 			Write($"=========================   {message}   =========================", parameters);
 		}
@@ -241,11 +261,12 @@ namespace ComplexLogger
 		/// <param name="message">The header name. Should be short</param>
 		/// <param name="level">The level of this message (NOT the existing the level)</param>
 		/// <param name="parameters">Any additional params</param>
-		public void WriteIntraSeparator(FlaggedLoggingLevel level, string message, params object[] parameters)
+		internal void WriteIntraSeparator(FlaggedLoggingLevel level, string message, params object[] parameters)
 		{
-			if (ComplexLogger<T>.CurrentLevel.HasFlag(level)) WriteIntraSeparator(message, parameters);
+			if (CurrentLevel.HasFlag(level)) WriteIntraSeparator(message, parameters);
 		}
-
+		#endregion
+		#region Exception
 		/// <summary>
 		/// Prints a log with <c>[EXCEPTION]</c> at the start.
 		/// </summary>
@@ -254,7 +275,7 @@ namespace ComplexLogger
 		/// <remarks>
 		/// <para>This is done as building the exception otherwise can be tedious</para>
 		/// </remarks>
-		private void WriteException(string message, System.Exception? exception)
+		internal void WriteException(string message, System.Exception? exception)
 		{
 			System.Text.StringBuilder sb = new();
 
@@ -266,12 +287,13 @@ namespace ComplexLogger
 
 			Write(sb.ToString());
 		}
-
+		#endregion
+		#region LogBlock
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="FormatedMessage"></param>
-		public void WriteLogBlock(string FormatedMessage)
+		internal void WriteLogBlock(string FormatedMessage)
 		{
 			Write(FormatedMessage);
 		}
@@ -280,7 +302,7 @@ namespace ComplexLogger
 		/// 
 		/// </summary>
 		/// <param name="lines"></param>
-		public void WriteLogBlock(string[] lines)
+		internal void WriteLogBlock(string[] lines)
 		{
 			System.Text.StringBuilder LogBlock = new();
 
@@ -298,7 +320,7 @@ namespace ComplexLogger
 		/// <param name="Title"></param>
 		/// <param name="Lines"></param>
 		/// <param name="color"></param>
-		public void WriteLogBlock(string Title, string[] Lines, System.Drawing.Color color)
+		internal void WriteLogBlock(string Title, string[] Lines, System.Drawing.Color color)
 		{
 			// ensure to create a list of colors equal to the number of entries in Lines
 			List<System.Drawing.Color> LineColors = [.. Lines.Select(s => color)];
@@ -312,7 +334,7 @@ namespace ComplexLogger
 		/// <param name="lines"></param>
 		/// <param name="lineColors"></param>
 		/// <exception cref="ComplexLoggerException"></exception>
-		public void WriteLogBlock(string Title, string[] lines, List<System.Drawing.Color>? lineColors)
+		internal void WriteLogBlock(string Title, string[] lines, List<System.Drawing.Color>? lineColors)
 		{
 			// if the lineColors array is not null, check the length to ensure that they are equal
 			if (lineColors != null)
@@ -346,5 +368,6 @@ namespace ComplexLogger
 
 			WriteLogBlock(LogBlock.ToString());
 		}
+		#endregion
 	}
 }
