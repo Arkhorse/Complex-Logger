@@ -8,7 +8,7 @@
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
 
-namespace ComplexLogger.Utilities.Logger.Enums
+namespace ComplexLogger
 {
 	/// <summary>
 	/// 

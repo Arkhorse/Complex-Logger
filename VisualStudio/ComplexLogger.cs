@@ -14,8 +14,6 @@ global using UnityEngine.AddressableAssets;
 global using ComplexLogger.Utilities;
 global using ComplexLogger.Utilities.Exceptions;
 global using ComplexLogger.Utilities.JSON;
-global using ComplexLogger.Utilities.Logger;
-global using ComplexLogger.Utilities.Logger.Enums;
 #endregion
 
 namespace ComplexLogger

@@ -1,4 +1,4 @@
-﻿namespace ComplexLogger.Utilities.Logger.Enums
+﻿namespace ComplexLogger
 {
     /// <summary>
     /// Simple enum to handle the different types of logging
