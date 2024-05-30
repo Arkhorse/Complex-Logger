@@ -19,7 +19,9 @@ namespace ComplexLogger.Utilities.Exceptions
     [System.Serializable]
     public class BadMemeException : System.Exception
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
         public BadMemeException() : base() { }
 
         /// <summary>
@@ -28,7 +30,11 @@ namespace ComplexLogger.Utilities.Exceptions
         /// <param name="message">The message to tell the developer why his meme is bad.</param>
         public BadMemeException(string message) : base(message) { }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public BadMemeException(string message, System.Exception inner) : base(message, inner) { }
     }
 }
