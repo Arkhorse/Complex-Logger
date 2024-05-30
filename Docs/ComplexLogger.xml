@@ -1,0 +1,459 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ComplexLogger</name>
+    </assembly>
+    <members>
+        <member name="T:ComplexLogger.BuildInfo">
+            <summary></summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Name">
+            <summary>The machine readable name of the mod (no special characters or spaces)</summary>
+            <remarks>
+            <para>This is used in logs that relate to this mod. So this should always be Alphanumerical, without exception</para>
+            </remarks>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Author">
+            <summary>Who made the mod</summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Version">
+            <summary>Current version</summary>
+            <value>This should always be <see href="https://semver.org">Semantic Versioning</see></value>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.GUIName">
+            <summary>Name used on GUI's, like ModSettings</summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.MelonLoaderVersion">
+            <summary>The minimum Melon Loader version that your mod requires</summary>
+            <remarks>
+            <para>This should only be increased if you actually require a newer version of MelonLoader. NEVER change it before an update has been properly tested</para>
+            <para>If a user has a version less than this, MelonLoader will not load this mod</para>
+            </remarks>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.PreviousAuthors">
+            <summary>Who used to handle the mod</summary>
+            <remarks>
+            <para>This is currently unused</para>
+            <para>When implemented, this will show the previous authors of this mod</para>
+            </remarks>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Description">
+            <summary>What the mod does</summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Company">
+            <summary>Company that made it</summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.DownloadLink">
+            <summary>A valid download link</summary>
+            <remarks>
+            <para>This must be a link to a file, not a site</para>
+            </remarks>
+            <example>https://github.com/Arkhorse/FuelManager/releases/download/latest/FuelManager.dll</example>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Copyright">
+            <summary>Copyright info</summary>
+            <remarks>When updating the year, use the StartYear-CurrentYear format eg(Copyright © 2020-2024)</remarks>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Trademark">
+            <summary>Trademark info</summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Product">
+            <summary>Product Name (Generally use the Name)</summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Culture">
+            <summary>Culture info</summary>
+        </member>
+        <member name="F:ComplexLogger.BuildInfo.Priority">
+            <summary>Priority of your mod. Most of the time you should not need to change this</summary>
+        </member>
+        <member name="T:ComplexLogger.Main">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.Main.OnInitializeMelon">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.Settings.OnConfirm">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.Settings.UpdateLevels">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.GetGearItemPrefab(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.GetToolItemPrefab(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.GetClothingItemPrefab(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.GetGearItemComponentPrefab``1(System.String)">
+            <summary>
+            Allows you to get any prefab from any valid component
+            </summary>
+            <typeparam name="T">The Component you want to get</typeparam>
+            <param name="name">Name of the prefab</param>
+            <returns>A valid prefab of the given Component or <see langword="null"/></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.NormalizeName(System.String)">
+            <summary>
+            Normalizes the name given to remove extra bits using regex for most of the changes
+            </summary>
+            <param name="name">The name of the thing to normalize</param>
+            <returns>Normalized name without <c>(Clone)</c> or any numbers appended</returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.IsPlayerAvailable(Il2Cpp.PlayerManager)">
+            <summary>
+            Checks if the player is currently involved in anything that would make modded actions unwanted
+            </summary>
+            <param name="PlayerManagerComponent">The current instance of the PlayerManager component, use <see cref="M:Il2Cpp.GameManager.GetPlayerManagerComponent"/></param>
+            <returns><see langword="true"/> if the player isnt dead, in a conversation, locked or in a cinematic</returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.IsInterfaceOpen">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.IsGearOperatable(Il2Cpp.GearItem)">
+            <summary>
+            
+            </summary>
+            <param name="gi"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.CommonUtilities.IsGearOperatable``1(``0,Il2Cpp.GearItem)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="panel"></param>
+            <param name="gi"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ComplexLogger.Utilities.ConversionUtilities">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ComplexLogger.Utilities.ConversionUtilities.Miles.ToMetersPerSecond(System.Double)">
+            <summary>
+            Converts MPH to M/S
+            </summary>
+            <param name="input">The MPH to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.ConversionUtilities.Miles.ToKilometersPerHour(System.Double)">
+            <summary>
+            Converts MPH to KM/H
+            </summary>
+            <param name="input">The MPH to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.ConversionUtilities.Kilometers.ToMetersPerSecond(System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.ConversionUtilities.GetNormalizedSpeed(System.Double)">
+            <summary>
+            Rounds the input up to the nearest int
+            </summary>
+            <param name="input">The float to convert</param>
+            <returns></returns>
+        </member>
+        <member name="T:ComplexLogger.Utilities.Exceptions.BadMemeException">
+            <summary>
+            An exception used mostly for mistakes that could happen during development, 'sanity check' type verification. And also for bad memes.
+            </summary>
+        </member>
+        <member name="M:ComplexLogger.Utilities.Exceptions.BadMemeException.#ctor(System.String)">
+            <summary>
+            Throw a bad meme exception.
+            </summary>
+            <param name="message">The message to tell the developer why his meme is bad.</param>
+        </member>
+        <member name="T:ComplexLogger.Utilities.Exceptions.ComplexLoggerException">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.Utilities.Exceptions.ComplexLoggerException.#ctor">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.Utilities.Exceptions.ComplexLoggerException.#ctor(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.Utilities.Exceptions.ComplexLoggerException.#ctor(System.String,System.Exception)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ComplexLogger.Utilities.JSON.JsonFile">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ComplexLogger.Utilities.JSON.JsonFile.GetDefaultOptions">
+            <summary>
+            Gets the default set of options
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ComplexLogger.Utilities.JSON.JsonFile.Save``1(System.String,``0,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Save the JSON file
+            </summary>
+            <typeparam name="T">The class reference</typeparam>
+            <param name="configFileName">The absolute path of the file to save</param>
+            <param name="Tinput">An instance of <typeparamref name="T"/> with the data you want to save</param>
+            <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to load the file</param>
+            <exception cref="T:ComplexLogger.Utilities.Exceptions.BadMemeException"></exception>
+        </member>
+        <member name="M:ComplexLogger.Utilities.JSON.JsonFile.Load``1(System.String,System.Boolean,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Load a JSON file
+            </summary>
+            <typeparam name="T">The class reference</typeparam>
+            <param name="configFileName">The absolute path of the file to save</param>
+            <param name="createFile">Create the file if it doesnt exist</param>
+            <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to save the file</param>
+            <returns>An instance of <typeparamref name="T"/> with the data desearalized from the JSON file</returns>
+            <exception cref="T:ComplexLogger.Utilities.Exceptions.BadMemeException"></exception>
+        </member>
+        <member name="M:ComplexLogger.Utilities.JSON.JsonFile.LoadAsync``1(System.String,System.Boolean,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Async load a JSON file
+            </summary>
+            <typeparam name="T">The class reference</typeparam>
+            <param name="configFileName">The absolute path of the file to save</param>
+            <param name="createFile">Create the file if it doesnt exist</param>
+            <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to save the file</param>
+            <returns>An instance of <typeparamref name="T"/> with the data desearalized from the JSON file</returns>
+            <exception cref="T:ComplexLogger.Utilities.Exceptions.BadMemeException"></exception>
+        </member>
+        <member name="M:ComplexLogger.Utilities.JSON.JsonFile.SaveAsync``1(System.String,``0,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Async save the JSON file
+            </summary>
+            <typeparam name="T">The class reference</typeparam>
+            <param name="configFileName">The absolute path of the file to save</param>
+            <param name="Tinput">An instance of <typeparamref name="T"/> with the data you want to save</param>
+            <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to load the file</param>
+            <exception cref="T:ComplexLogger.Utilities.Exceptions.BadMemeException"></exception>
+        </member>
+        <member name="T:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.None">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Trace">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Debug">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Verbose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Warning">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Error">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Critical">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Exception">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:ComplexLogger.Utilities.Logger.Enums.LoggingSubType">
+            <summary>
+            Simple enum to handle the different types of logging
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.LoggingSubType.Normal">
+            <summary>
+            General use. This is used by default
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.LoggingSubType.Separator">
+            <summary>
+            To print a separator
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.LoggingSubType.IntraSeparator">
+            <summary>
+            To print a header
+            </summary>
+        </member>
+        <member name="F:ComplexLogger.Utilities.Logger.Enums.LoggingSubType.uConsole">
+            <summary>
+            Print to the Unity Console
+            </summary>
+        </member>
+        <member name="T:ComplexLogger.BaseLogger`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ComplexLogger.BaseLogger`1.Write(System.String,System.Object[])">
+            <summary>
+            The base log method
+            </summary>
+            <param name="message">The formated string to add as the message</param>
+            <param name="parameters">Any additional params, note that this must be either a single item or an array <c>Write("", [object, object])</c></param>
+        </member>
+        <member name="T:ComplexLogger.ComplexLogger`1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.#ctor(ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel[])">
+            <summary>
+            
+            </summary>
+            <param name="levels"></param>
+        </member>
+        <member name="P:ComplexLogger.ComplexLogger`1.Instance">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ComplexLogger.ComplexLogger`1.CurrentLevel">
+            <summary>
+            The current logging level. Levels are bitwise added or removed.
+            </summary>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.AddLevel(ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel)">
+            <summary>
+            Add a flag to the existing list
+            </summary>
+            <param name="level">The level to add</param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.RemoveLevel(ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel)">
+            <summary>
+            Remove a flag from the list
+            </summary>
+            <param name="level">Level to remove</param>
+            <remarks>Attempting to remove "<see cref="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.None"/>" or "<see cref="F:ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel.Exception"/>" is not supported</remarks>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ComplexLogger.ComplexLogger`1.Log(ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel,ComplexLogger.Utilities.Logger.Enums.LoggingSubType,System.Object[])" -->
+        <member name="M:ComplexLogger.ComplexLogger`1.Log(System.String,ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.Log(System.String,ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel,System.Exception,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.Log(System.String,ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel,System.Nullable{ComplexLogger.Utilities.Logger.Enums.LoggingSubType},System.Exception,System.Object[])">
+            <summary>
+            Print a log if the current level matches the level given.
+            </summary>
+            <param name="message">Formatted string to use in this log</param>
+            <param name="level">The level of this message (NOT the existing the level)</param>
+            <param name="exception">The exception, if applicable, to display</param>
+            <param name="LogSubType">Used to write separators only when the logging level matches the current flags</param>
+            <param name="parameters">Any additional params</param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteSeperator(System.Object[])">
+            <summary>
+            Prints a seperator
+            </summary>
+            <param name="parameters">Any additional params</param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteSeperator(ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel,System.Object[])">
+            <summary>
+            Prints a seperator
+            </summary>
+            <param name="parameters">Any additional params</param>
+            <param name="level">The level of this message (NOT the existing the level)</param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteIntraSeparator(System.String,System.Object[])">
+            <summary>
+            Logs an "Intra Seperator", allowing you to print headers
+            </summary>
+            <param name="message">The header name. Should be short</param>
+            <param name="parameters">Any additional params</param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteIntraSeparator(ComplexLogger.Utilities.Logger.Enums.FlaggedLoggingLevel,System.String,System.Object[])">
+            <summary>
+            Logs an "Intra Seperator", allowing you to print headers
+            </summary>
+            <param name="message">The header name. Should be short</param>
+            <param name="level">The level of this message (NOT the existing the level)</param>
+            <param name="parameters">Any additional params</param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteException(System.String,System.Exception)">
+            <summary>
+            Prints a log with <c>[EXCEPTION]</c> at the start.
+            </summary>
+            <param name="message">The formated string to add as the message. Displayed before the exception</param>
+            <param name="exception">The exception thrown</param>
+            <remarks>
+            <para>This is done as building the exception otherwise can be tedious</para>
+            </remarks>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteLogBlock(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="FormatedMessage"></param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteLogBlock(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="lines"></param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteLogBlock(System.String,System.String[],System.Drawing.Color)">
+            <summary>
+            
+            </summary>
+            <param name="Title"></param>
+            <param name="Lines"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:ComplexLogger.ComplexLogger`1.WriteLogBlock(System.String,System.String[],System.Collections.Generic.List{System.Drawing.Color})">
+            <summary>
+            
+            </summary>
+            <param name="Title"></param>
+            <param name="lines"></param>
+            <param name="lineColors"></param>
+            <exception cref="T:ComplexLogger.Utilities.Exceptions.ComplexLoggerException"></exception>
+        </member>
+    </members>
+</doc>
