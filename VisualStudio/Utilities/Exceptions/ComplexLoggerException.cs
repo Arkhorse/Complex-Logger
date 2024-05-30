@@ -1,6 +1,8 @@
 ﻿namespace ComplexLogger.Utilities.Exceptions
 {
-	/// <inheritdoc/>
+	/// <summary>
+	/// Represents an exception when attempting to use the Complex Logger
+	/// </summary>
 	[System.Serializable]
 	public class ComplexLoggerException : System.Exception
 	{
@@ -8,9 +10,12 @@
 		public ComplexLoggerException() : base() { }
 
 		/// <inheritdoc/>
-		public ComplexLoggerException(string message) : base(message) { }
+		public ComplexLoggerException(string? message) : base(message) { }
 
 		/// <inheritdoc/>
-		public ComplexLoggerException(string message, System.Exception innerException) : base(message, innerException) { }
+		public ComplexLoggerException(string? paramName, string? message) : base(message) { }
+
+		/// <inheritdoc/>
+		public ComplexLoggerException(string? message, System.Exception innerException) : base(message, innerException) { }
 	}
 }
