@@ -39,17 +39,7 @@ namespace ComplexLogger
 		/// <summary>
 		/// The current logging level. Levels are bitwise added or removed.
 		/// </summary>
-		public static FlaggedLoggingLevel CurrentLevel
-		{
-			get
-			{
-				return ComplexLogger<MelonBase>.CurrentLevel;
-			}
-			private set
-			{
-				ComplexLogger<MelonBase>.CurrentLevel = value;
-			}
-		}
+		public static FlaggedLoggingLevel CurrentLevel;
 
 		/// <summary>
 		/// Add a flag to the existing list
