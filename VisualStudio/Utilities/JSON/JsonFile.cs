@@ -62,8 +62,9 @@ namespace ComplexLogger.Utilities.JSON
 		/// <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to save the file</param>
 		/// <returns>An instance of <typeparamref name="T"/> with the data desearalized from the JSON file</returns>
 		/// <exception cref="BadMemeException"></exception>
-		public static T? Load<T>(string configFileName, bool createFile = false, JsonSerializerOptions? options = null)
+		public static T? Load<T>(string? configFileName, bool createFile = false, JsonSerializerOptions? options = null)
 		{
+			if (string.IsNullOrWhiteSpace(configFileName)) throw new BadMemeException("configFileName is null, empty or whitespace");
 			if (!File.Exists(configFileName))
 			{
 				if (createFile)
