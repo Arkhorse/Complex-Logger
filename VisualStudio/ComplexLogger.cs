@@ -18,10 +18,67 @@ global using ComplexLogger.Utilities.JSON;
 
 namespace ComplexLogger
 {
-
 	/// <inheritdoc/>
 	public class Main : MelonMod
 	{
+		/// <summary>
+		/// The current logging level. Levels are bitwise added or removed.
+		/// </summary>
+		public static FlaggedLoggingLevel CurrentLevel = FlaggedLoggingLevel.None | FlaggedLoggingLevel.Error | FlaggedLoggingLevel.Critical | FlaggedLoggingLevel.Exception;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public static ComplexLogger<Main> Logger = new();
+		/// <summary>
+		/// Add a flag to the existing list
+		/// </summary>
+		/// <param name="level">The level to add</param>
+		public static void AddLevel(FlaggedLoggingLevel level)
+		{
+			if (CurrentLevel.HasFlag(level))
+			{
+				Logger.Log($"Level has already been added: {level}", FlaggedLoggingLevel.Verbose);
+				return;
+			}
+
+			CurrentLevel |= level;
+		}
+
+		/// <summary>
+		/// Remove a flag from the list
+		/// </summary>
+		/// <param name="level">Level to remove</param>
+		/// <remarks>Attempting to remove "<see cref="FlaggedLoggingLevel.None"/>" or "<see cref="FlaggedLoggingLevel.Exception"/>" is not supported</remarks>
+		public static bool RemoveLevel(FlaggedLoggingLevel level)
+		{
+			if (level == FlaggedLoggingLevel.None)
+			{
+				Logger.Log($"Removing \"FlaggedLoggingLevel.None\" is not supported", FlaggedLoggingLevel.Verbose);
+				return false;
+			}
+			else if (level == FlaggedLoggingLevel.Error)
+			{
+				Logger.Log($"Removing \"FlaggedLoggingLevel.Error\" is not supported", FlaggedLoggingLevel.Verbose);
+				return false;
+			}
+			else if (level == FlaggedLoggingLevel.Critical)
+			{
+				Logger.Log($"Removing \"FlaggedLoggingLevel.Critical\" is not supported", FlaggedLoggingLevel.Verbose);
+				return false;
+			}
+			else if (level == FlaggedLoggingLevel.Exception)
+			{
+				Logger.Log($"Removing \"FlaggedLoggingLevel.Exception\" is not supported", FlaggedLoggingLevel.Verbose);
+				return false;
+			}
+
+			Logger.Log($"Removed {level}", FlaggedLoggingLevel.Verbose);
+			CurrentLevel &= ~level;
+
+			return true;
+		}
+
 		/// <inheritdoc/>
 		public override void OnInitializeMelon()
 		{

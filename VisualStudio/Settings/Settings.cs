@@ -32,14 +32,14 @@ namespace ComplexLogger
 		/// </summary>
 		public void UpdateLevels()
 		{
-			if (TRACE) ComplexLogger<Main>.AddLevel(FlaggedLoggingLevel.Trace);
-			else ComplexLogger<Main>.RemoveLevel(FlaggedLoggingLevel.Trace);
+			if (TRACE) Main.AddLevel(FlaggedLoggingLevel.Trace);
+			else Main.RemoveLevel(FlaggedLoggingLevel.Trace);
 
-			if (DEBUG) ComplexLogger<Main>.AddLevel(FlaggedLoggingLevel.Debug);
-			else ComplexLogger<Main>.RemoveLevel(FlaggedLoggingLevel.Debug);
+			if (DEBUG) Main.AddLevel(FlaggedLoggingLevel.Debug);
+			else Main.RemoveLevel(FlaggedLoggingLevel.Debug);
 
-			if (VERBOSE) ComplexLogger<Main>.AddLevel(FlaggedLoggingLevel.Warning);
-			else ComplexLogger<Main>.RemoveLevel(FlaggedLoggingLevel.Warning);
+			if (VERBOSE) Main.AddLevel(FlaggedLoggingLevel.Warning);
+			else Main.RemoveLevel(FlaggedLoggingLevel.Warning);
 		}
 
 		// MUST be static
