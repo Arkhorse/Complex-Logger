@@ -24,7 +24,7 @@ namespace ModNamespace
 {
     public class Main : MelonMod
     {
-        public static ComplexLogger Logger { get; } = new();
+        public static ComplexLogger<Main> Logger { get; } = new();
 
         public override void OnInitializeMelon()
         {
