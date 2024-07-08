@@ -12,10 +12,9 @@ This mod was created because MelonLoader does not have the ability to do this fo
 
 # Usage in Mods
 You will need to add a project reference to this mods dll. Once that is done, there is a few more steps:
-- Add `using ComplexLogger;`
-- Add `public static ComplexLogger<T> Logger = new();`
-    - You dont need to use the `public` keyword.
-    - `<T>` requires a class that extends `MelonBase`, which can be `MelonMod` or `MelonPlugin`
+- Add `global using ComplexLogger;` to the top of your main file, this will allow you to use ComplexLogger's stuff anywhere
+- Add `public static ComplexLogger<T> Logger = new();` to your `MelonMod`/`MelonPlugin` class. You could also use `internal`, but it must be accessable from other classes, so you cant use `private`
+    - `<T>` requires a class that extends `MelonBase`, which can be a `MelonMod` or a `MelonPlugin`
 
 So your main class should look something like this:
 ```cs
@@ -25,11 +24,10 @@ namespace ModNamespace
 {
     public class Main : MelonMod
     {
-        public static ComplexLogger Logger { get; private set; }
+        public static ComplexLogger Logger { get; } = new();
 
         public override void OnInitializeMelon()
         {
-            Logger ??= new();
             // code
         }
     }
@@ -38,16 +36,16 @@ namespace ModNamespace
 
 Once these things are added, you will be able to use the logger. No longer will you need to use defines for debug messages. No longer will you need to recompile a mod just to enable those define based debug messages.
 
-You can also add color and other text changes using the `params object[]` array. This should be properly handled, but is currently not fully tested.
+Color is automatically handled, all `FlaggedLoggingLevel.Warning` messages are Yellow, `FlaggedLoggingLevel.Error` are Red, `FlaggedLoggingLevel.Critical` are Dark Red and `FlaggedLoggingLevel.Exception` is also red. I may change Error and Critical to another color, if this is wanted. This change would be done to be able to properly distinguish them from exceptions, but is not 100% required for users.
 
 # Technical Details
-This mod makes use of a generic class to handle extending the base MelonLogger. Note that you _cant_ use a class that doesnt extend the `MelonBase` class in some way as the class that you use to instantiate the ComplexLogger instance.
+This mod makes use of a generic class to handle extending the base MelonLogger. Note that you _cant_ use a class that doesnt extend the `MelonBase` class in some way as the class that you use to instantiate the ComplexLogger `class`.
 
 ## Logging Sub Type
 I also implemented a handy sub type that you can use to print separators and headers. In order to use them, you will need to use something along these examples:
-- `Logger.Log(string.Empty, FlaggedLoggingLevel.Debug, null, LoggingSubType.Separator);`
-- `Logger.Log("I am a header", FlaggedLoggingLevel.Debug, null, LoggingSubType.IntraSeparator);`
-- `Logger.Log("This will print to the Unity console (or uConsole)", FlaggedLoggingLevel.Debug, null, LoggingSubType.uConsole);`
+- `Logger.Log(FlaggedLoggingLevel.Debug, LoggingSubType.Separator);`
+- `Logger.Log("I am a header", FlaggedLoggingLevel.Debug, LoggingSubType.IntraSeparator);`
+- `Logger.Log("This will print to the Unity console (or uConsole)", FlaggedLoggingLevel.Debug, LoggingSubType.uConsole);`
 
 Note: I forgot to write a specific function to handle the sub type without the exception. In a future update, you will not need the `null` argument and there will be another function to handle the separator, without a message string.
 
@@ -75,12 +73,14 @@ Logger.Log("Title", lines, LineColors, FlaggedLoggingLevel.Debug, LoggingSubType
 ## Levels
 - [ ] None
     - **Always Enabled**
+    - This is used for generic messages, like when you must print something to the log, without the user being able to disable the message
 - [ ] Trace
     - Use this for logs that you dont really need for most cases
 - [ ] Debug
     - This is your bread and butter. You'll likely use only this level
 - [ ] Verbose
     - This is for debug information that is only useful when the normal debug info just isnt enough
+    - Use this for logging things in Update methods
 - [ ] Warning
     - Use this level for warnings that you dont absolutely need to be printed
 - [ ] Error
