@@ -18,7 +18,7 @@ You will need to add a project reference to this mods dll. Once that is done, th
 
 So your main class should look something like this:
 ```cs
-using ComplexLogger;
+global using ComplexLogger;
 
 namespace ModNamespace
 {
