@@ -47,8 +47,6 @@ I also implemented a handy sub type that you can use to print separators and hea
 - `Logger.Log("I am a header", FlaggedLoggingLevel.Debug, LoggingSubType.IntraSeparator);`
 - `Logger.Log("This will print to the Unity console (or uConsole)", FlaggedLoggingLevel.Debug, LoggingSubType.uConsole);`
 
-Note: I forgot to write a specific function to handle the sub type without the exception. In a future update, you will not need the `null` argument and there will be another function to handle the separator, without a message string.
-
 ## Writing Blocks
 Another feature is the ability to write entire log blocks. This feature is a bit more complex, but not that hard to use:
 
