@@ -17,29 +17,11 @@ You will need to add a project reference to this mods dll. Once that is done, th
     - `<T>` requires a class that extends `MelonBase`, which can be a `MelonMod` or a `MelonPlugin`
 
 So your main class should look something like this:
-```cs
-global using ComplexLogger;
-
-namespace ModNamespace
-{
-    public class Main : MelonMod
-    {
-        public static ComplexLogger<Main> Logger { get; } = new();
-
-        public override void OnInitializeMelon()
-        {
-            // code
-        }
-    }
-}
-```
+https://github.com/Arkhorse/Complex-Logger/blob/45c0099a8ae5a9f5abec8324500715a7ff5b5c4d/Docs/ExampleClass.cs#L1-L11
 
 Once these things are added, you will be able to use the logger. No longer will you need to use defines for debug messages. No longer will you need to recompile a mod just to enable those define based debug messages.
 
 Color is automatically handled, all `FlaggedLoggingLevel.Warning` messages are Yellow, `FlaggedLoggingLevel.Error` are Red, `FlaggedLoggingLevel.Critical` are Dark Red and `FlaggedLoggingLevel.Exception` is also red. I may change Error and Critical to another color, if this is wanted. This change would be done to be able to properly distinguish them from exceptions, but is not 100% required for users.
-
-# Technical Details
-This mod makes use of a generic class to handle extending the base MelonLogger. Note that you _cant_ use a class that doesnt extend the `MelonBase` class in some way as the class that you use to instantiate the ComplexLogger `class`.
 
 ## Logging Sub Type
 I also implemented a handy sub type that you can use to print separators and headers. In order to use them, you will need to use something along these examples:
@@ -83,7 +65,16 @@ Logger.Log("Title", lines, LineColors, FlaggedLoggingLevel.Debug, LoggingSubType
     - Use this level for warnings that you dont absolutely need to be printed
 - [ ] Error
     - **Always Enabled**
+    - Use this for anything you consider to be an issue but isnt critical or an exception
 - [ ] Critical
     - **Always Enabled**
+    - Use this for anything critical that breaks
 - [ ] Exception
     - **Always Enabled**
+    - Use this for all exceptions. You should always be using a `Try/Catch` if the thing your doing can throw an exception. NOTE: Do not rethrow the exception, the ComplexLogger will handle everything. Use a return if you must end the method execution at that point
+
+# Technical Details
+This mod makes use of a generic class to handle extending the base MelonLogger. This means that you _cant_ use a class that doesnt extend the `MelonBase` class in some way as the class that you use to instantiate the ComplexLogger `class`.
+
+This is how the mod actually handles the different levels: https://github.com/Arkhorse/Complex-Logger/blob/1310dbbe4309d7eb9e33cd291971f2d76b3217b7/VisualStudio/Utilities/Logger/ComplexLogger.cs#L147-L176
+Exceptions have additional text and whatnot, so have their own dedicated method: https://github.com/Arkhorse/Complex-Logger/blob/1310dbbe4309d7eb9e33cd291971f2d76b3217b7/VisualStudio/Utilities/Logger/ComplexLogger.cs#L229-L240
