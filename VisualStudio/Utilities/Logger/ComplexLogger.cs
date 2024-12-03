@@ -8,6 +8,7 @@
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
 
+using System.Runtime.CompilerServices;
 using MelonLoader.Pastel;
 
 namespace ComplexLogger
@@ -36,9 +37,9 @@ namespace ComplexLogger
 		/// </summary>
 		/// <param name="level"></param>
 		/// <param name="LogSubType"></param>
-		/// <param name="parameters"></param>
-		public void Log(FlaggedLoggingLevel level, LoggingSubType LogSubType, params object[] parameters) 
-			=> Log(string.Empty, level, LogSubType, exception: null, parameters);
+		/// <param name="memberName">This should never be filled by your log call. This is just used to add method info to your log</param>
+		public void Log(FlaggedLoggingLevel level, LoggingSubType LogSubType, [CallerMemberName] string memberName = "") 
+			=> Log(string.Empty, level, LogSubType, exception: null, memberName);
 
 		/// <summary>
 		/// for when you need to log a header
@@ -46,18 +47,18 @@ namespace ComplexLogger
 		/// <param name="message"></param>
 		/// <param name="level"></param>
 		/// <param name="LogSubType"></param>
-		/// <param name="parameters"></param>
-		public void Log(string message, FlaggedLoggingLevel level, LoggingSubType LogSubType, params object[] parameters)
-			=> Log(message, level, LogSubType, exception: null, parameters);
+		/// <param name="memberName">This should never be filled by your log call. This is just used to add method info to your log</param>
+		public void Log(string message, FlaggedLoggingLevel level, LoggingSubType LogSubType, [CallerMemberName] string memberName = "")
+			=> Log(message, level, LogSubType, exception: null, memberName);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="message"></param>
 		/// <param name="level"></param>
-		/// <param name="parameters"></param>
-		public void Log(string message, FlaggedLoggingLevel level, params object[] parameters) 
-			=> Log(message, level, LoggingSubType.Normal, exception: null, parameters);
+		/// <param name="memberName">This should never be filled by your log call. This is just used to add method info to your log</param>
+		public void Log(string message, FlaggedLoggingLevel level, [CallerMemberName] string memberName = "") 
+			=> Log(message, level, LoggingSubType.Normal, exception: null, memberName);
 
 		/// <summary>
 		/// 
@@ -65,9 +66,9 @@ namespace ComplexLogger
 		/// <param name="message"></param>
 		/// <param name="level"></param>
 		/// <param name="exception"></param>
-		/// <param name="parameters"></param>
-		public void Log(string message, FlaggedLoggingLevel level, System.Exception exception, params object[] parameters) 
-			=> Log(message, level, LoggingSubType.Normal, exception: exception, parameters);
+		/// <param name="memberName">This should never be filled by your log call. This is just used to add method info to your log</param>
+		public void Log(string message, FlaggedLoggingLevel level, System.Exception exception, [CallerMemberName] string memberName = "") 
+			=> Log(message, level, LoggingSubType.Normal, exception: exception, memberName);
 
 		/// <summary>
 		/// Allows you to log an entire block, using <see cref="WriteLogBlock(string, string[], System.Drawing.Color)"/>
@@ -106,9 +107,17 @@ namespace ComplexLogger
 		/// <param name="level">The level of this message (NOT the existing the level)</param>
 		/// <param name="exception">The exception, if applicable, to display</param>
 		/// <param name="LogSubType">Used to write separators only when the logging level matches the current flags</param>
-		/// <param name="parameters">Any additional params</param>
-		public void Log(string message, FlaggedLoggingLevel level, LoggingSubType? LogSubType, System.Exception? exception, params object[] parameters)
+		/// <param name="memberName">This should never be filled by your log call. This is just used to add method info to your log</param>
+		public void Log(string message, FlaggedLoggingLevel level, LoggingSubType? LogSubType, System.Exception? exception, [CallerMemberName] string memberName = "")
 		{
+			#region Temp stuff to alert users of deprecated stuff
+#pragma warning disable CS0618 // Type or member is obsolete
+			if (level.HasFlag(FlaggedLoggingLevel.None))
+			{
+				Write("Using the \'FlaggedLoggingLevel.None\' level is not going to be supported anymore. Please use \'FlaggedLoggingLevel.Always\' instead");
+			}
+#pragma warning restore CS0618 // Type or member is obsolete
+			#endregion
 			if (LogSubType != null && LogSubType != LoggingSubType.Normal)
 			{
 				if (LogSubType == LoggingSubType.Separator)
@@ -123,11 +132,11 @@ namespace ComplexLogger
 				}
 				else if (LogSubType == LoggingSubType.uConsole)
 				{
+					uConsole.Log(message);
 					if (exception != null)
 					{
 						uConsole.Log(exception.Message);
 					}
-					uConsole.Log(message);
 					return;
 				}
 				else if (LogSubType == LoggingSubType.Block)
@@ -139,32 +148,30 @@ namespace ComplexLogger
 			List<object> Warning = [];
 			List<object> Critical = [];
 			Warning.Add(Color.red);
-			Warning.AddRange(parameters);
 			Critical.Add(Color.red);
 			Critical.Add(FontStyle.Bold);
-			Critical.AddRange(parameters);
 
 			if (Main.CurrentLevel.HasFlag(level))
 			{
 				switch (level)
 				{
 					case FlaggedLoggingLevel.Trace:
-						Write($"[TRACE] {message}", parameters);
+						Write($"[TRACE] {memberName}::{message}");
 						break;
 					case FlaggedLoggingLevel.Debug:
-						Write($"[DEBUG] {message}", parameters);
+						Write($"[DEBUG] {memberName}::{message}");
 						break;
 					case FlaggedLoggingLevel.Verbose:
-						Write($"[INFO] {message}", parameters);
+						Write($"[INFO] {memberName}::{message}");
 						break;
 					case FlaggedLoggingLevel.Warning:
-						Write($"[WARNING] {message}", Warning);
+						Write($"[WARNING] {memberName}::{message}", Warning);
 						break;
 					case FlaggedLoggingLevel.Error:
-						Write($"[ERROR] {message}", Warning);
+						Write($"[ERROR] {memberName}::{message}", Warning);
 						break;
 					case FlaggedLoggingLevel.Critical:
-						Write($"[CRITICAL] {message}", Critical);
+						Write($"[CRITICAL] {memberName}::{message}", Critical);
 						break;
 					case FlaggedLoggingLevel.Exception:
 						WriteException(message, exception);
@@ -180,30 +187,27 @@ namespace ComplexLogger
 		/// <summary>
 		/// Prints a seperator
 		/// </summary>
-		/// <param name="parameters">Any additional params</param>
-		private void WriteSeperator(params object[] parameters)
+		private void WriteSeperator()
 		{
-			Write("==============================================================================", parameters);
+			Write("==============================================================================");
 		}
 
 		/// <summary>
 		/// Prints a seperator
 		/// </summary>
-		/// <param name="parameters">Any additional params</param>
 		/// <param name="level">The level of this message (NOT the existing the level)</param>
-		private void WriteSeperator(FlaggedLoggingLevel level, params object[] parameters)
+		private void WriteSeperator(FlaggedLoggingLevel level)
 		{
-			if (Main.CurrentLevel.HasFlag(level)) WriteSeperator(parameters);
+			if (Main.CurrentLevel.HasFlag(level)) WriteSeperator();
 		}
 
 		/// <summary>
 		/// Logs an "Intra Seperator", allowing you to print headers
 		/// </summary>
 		/// <param name="message">The header name. Should be short</param>
-		/// <param name="parameters">Any additional params</param>
-		private void WriteIntraSeparator(string message, params object[] parameters)
+		private void WriteIntraSeparator(string message)
 		{
-			Write($"=========================   {message}   =========================", parameters);
+			Write($"=========================   {message}   =========================");
 		}
 
 		/// <summary>
@@ -211,10 +215,9 @@ namespace ComplexLogger
 		/// </summary>
 		/// <param name="message">The header name. Should be short</param>
 		/// <param name="level">The level of this message (NOT the existing the level)</param>
-		/// <param name="parameters">Any additional params</param>
-		private void WriteIntraSeparator(FlaggedLoggingLevel level, string message, params object[] parameters)
+		private void WriteIntraSeparator(FlaggedLoggingLevel level, string message)
 		{
-			if (Main.CurrentLevel.HasFlag(level)) WriteIntraSeparator(message, parameters);
+			if (Main.CurrentLevel.HasFlag(level)) WriteIntraSeparator(message);
 		}
 		#endregion
 		#region Exception
@@ -230,7 +233,7 @@ namespace ComplexLogger
 		{
 			System.Text.StringBuilder sb = new();
 
-			sb.Append("[EXCEPTION]");
+			sb.Append("[EXCEPTION] ");
 			sb.Append(message);
 
 			if (exception != null) sb.AppendLine(exception.Message);
