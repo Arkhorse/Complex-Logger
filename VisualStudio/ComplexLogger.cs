@@ -24,12 +24,13 @@ namespace ComplexLogger
 		/// <summary>
 		/// The current logging level. Levels are bitwise added or removed.
 		/// </summary>
-		public static FlaggedLoggingLevel CurrentLevel = FlaggedLoggingLevel.None | FlaggedLoggingLevel.Error | FlaggedLoggingLevel.Critical | FlaggedLoggingLevel.Exception;
-
+		public static FlaggedLoggingLevel CurrentLevel = FlaggedLoggingLevel.Error | FlaggedLoggingLevel.Critical | FlaggedLoggingLevel.Exception | FlaggedLoggingLevel.Always;
 		/// <summary>
 		/// 
 		/// </summary>
-		public static ComplexLogger<Main> Logger = new();
+		internal static ComplexLogger<Main> Logger { get; } = new();
+
+		// Perhaps change these to extensions
 		/// <summary>
 		/// Add a flag to the existing list
 		/// </summary>
