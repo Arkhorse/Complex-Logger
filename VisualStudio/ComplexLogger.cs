@@ -28,7 +28,9 @@ namespace ComplexLogger
 		/// <summary>
 		/// 
 		/// </summary>
-		public static ComplexLogger<Main> Logger = new();
+		internal static ComplexLogger<Main> Logger { get; } = new();
+
+		// Perhaps change these to extensions
 		/// <summary>
 		/// Add a flag to the existing list
 		/// </summary>
