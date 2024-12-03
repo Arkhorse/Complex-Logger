@@ -69,7 +69,9 @@ namespace ComplexLogger.Utilities.JSON
 			{
 				if (createFile)
 				{
+#pragma warning disable CS8604 // Possible null reference argument.
 					Save<T>(configFileName, default, options);
+#pragma warning restore CS8604 // Possible null reference argument.
 				}
 				else
 				{
