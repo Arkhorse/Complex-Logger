@@ -1,5 +1,5 @@
 # Installation
-Ensure Melon Loader (v0.6.1) is installed and you have ran the game at least once (this is to allow ML to generate the needed assemblies)
+Ensure Melon Loader (v0.6.4) is installed and you have ran the game at least once (this is to allow ML to generate the needed assemblies)
 
 ## Dependencies
 This mod currently only requires Mod Settings
