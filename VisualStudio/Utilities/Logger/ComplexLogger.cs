@@ -183,6 +183,26 @@ namespace ComplexLogger
 			}
 			return;
 		}
+		#region Obsolete
+		[Obsolete]
+		public void Log(FlaggedLoggingLevel level, LoggingSubType LogSubType, params object[] parameters) { }
+		[Obsolete]
+		public void Log(string message, FlaggedLoggingLevel level, LoggingSubType LogSubType, params object[] parameters) { }
+		[Obsolete]
+		public void Log(string message, FlaggedLoggingLevel level, params object[] parameters) { }
+		[Obsolete]
+		public void Log(string message, FlaggedLoggingLevel level, System.Exception exception, params object[] parameters) { }
+		[Obsolete]
+		public void Log(string message, FlaggedLoggingLevel level, LoggingSubType? LogSubType, System.Exception? exception, params object[] parameters) { }
+		[Obsolete]
+		private void WriteSeperator(params object[] parameters) { }
+		[Obsolete]
+		private void WriteSeperator(FlaggedLoggingLevel level, params object[] parameters) { }
+		[Obsolete]
+		private void WriteIntraSeparator(string message, params object[] parameters) { }
+		[Obsolete]
+		private void WriteIntraSeparator(FlaggedLoggingLevel level, string message, params object[] parameters) { }
+		#endregion
 		#region Separators
 		/// <summary>
 		/// Prints a seperator
