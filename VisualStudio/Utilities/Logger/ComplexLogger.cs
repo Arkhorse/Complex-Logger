@@ -112,7 +112,7 @@ namespace ComplexLogger
 		{
 			#region Temp stuff to alert users of deprecated stuff
 #pragma warning disable CS0618 // Type or member is obsolete
-			if (level.HasFlag(FlaggedLoggingLevel.None))
+			if (level == FlaggedLoggingLevel.None)
 			{
 				Write("Using the \'FlaggedLoggingLevel.None\' level is not going to be supported anymore. Please use \'FlaggedLoggingLevel.Always\' instead");
 			}
@@ -155,6 +155,9 @@ namespace ComplexLogger
 			{
 				switch (level)
 				{
+					case FlaggedLoggingLevel.Always:
+						Write($"{memberName}::{message}", ConsoleColor.Green);
+						break;
 					case FlaggedLoggingLevel.Trace:
 						Write($"[TRACE] {memberName}::{message}");
 						break;
